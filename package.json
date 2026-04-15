@@ -1,8 +1,10 @@
 {
   "name": "momence-test",
+  "author": "Filip Březina",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tanstack/react-query": "^5.99.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
@@ -14,6 +16,7 @@
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-scripts": "5.0.1",
+    "styled-components": "^6.4.0",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
