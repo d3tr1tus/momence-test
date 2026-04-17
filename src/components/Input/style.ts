@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import { customCss, CustomCssProps } from 'utils/styled';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<CustomCssProps>`
   display: flex;
   align-items: center;
   background: ${({ theme }) => theme.colors.surfaceRecessed};
@@ -13,6 +14,7 @@ export const Wrapper = styled.div`
   &:focus-within {
     border-color: ${({ theme }) => theme.colors.borderFocus};
   }
+  ${customCss}
 `;
 
 export const StyledInput = styled.input`

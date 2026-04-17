@@ -1,10 +1,10 @@
 import React from 'react';
-import { PillProps } from 'types/components';
-import { StyledPill } from './style';
+import { PillProps } from 'components/Pill/Pill.type';
+import { StyledPill } from 'components/Pill/style';
 
-const Pill: React.FC<PillProps> = ({ active, children, ...rest }) => {
+const Pill: React.FC<PillProps> = ({ active, css, children, ...rest }) => {
   return (
-    <StyledPill $active={active} {...rest}>
+    <StyledPill $active={active} $css={css} {...rest}>
       {children}
     </StyledPill>
   );

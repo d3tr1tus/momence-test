@@ -1,12 +1,14 @@
 import styled from 'styled-components';
+import { customCss, CustomCssProps } from 'utils/styled';
 
-export const StyledPill = styled.button<{ $active: boolean }>`
+export const StyledPill = styled.button<{ $active: boolean } & CustomCssProps>`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${({ theme }) => theme.space.xs};
-  height: 2.75rem;
-  padding: 0 ${({ theme }) => theme.space.md};
+  min-height: 2.75rem;
+  padding: ${({ theme }) => theme.space.xs} ${({ theme }) => theme.space.sm};
+  overflow: hidden;
   border-radius: ${({ theme }) => theme.radius.sm};
   border: ${({ $active, theme }) =>
     $active
@@ -27,4 +29,5 @@ export const StyledPill = styled.button<{ $active: boolean }>`
     background: ${({ $active, theme }) =>
       $active ? theme.colors.primaryLight : theme.colors.pillHover};
   }
+  ${customCss}
 `;

@@ -3,10 +3,10 @@ import { useExchangeRates } from 'hooks/data/useExchangeRates';
 import Card from 'components/Card/Card';
 import Badge from 'components/Badge/Badge';
 import Typography from 'components/Typography/Typography';
-import Button from 'components/Button/Button';
 import Input from 'components/Input/Input';
+import Button from 'components/Button/Button';
 import Pill from 'components/Pill/Pill';
-import * as S from './style';
+import * as S from 'context/currency-converter/style';
 import dayjs from 'dayjs';
 
 const CurrencyConverter: React.FC = () => {
@@ -29,15 +29,15 @@ const CurrencyConverter: React.FC = () => {
   }, [converted]);
 
   const handleConvert = (overrideCurrency?: string) => {
-    const activeCurrency: string = overrideCurrency ?? currency;
+    const activeCurrency = overrideCurrency ?? currency;
     if (!data || !amount) return;
     const rateInfo = data.rates[activeCurrency];
     if (!rateInfo) return;
 
-    const czk: number = parseFloat(amount.replace(/\s/g, ''));
+    const czk = parseFloat(amount.replace(/\s/g, ''));
     if (isNaN(czk)) return;
 
-    const result: number = (czk / rateInfo.rate) * rateInfo.amount;
+    const result = (czk / rateInfo.rate) * rateInfo.amount;
     setConverted({
       result,
       rate: rateInfo.rate / rateInfo.amount,
@@ -54,7 +54,7 @@ const CurrencyConverter: React.FC = () => {
     <S.Page>
       <Card>
         <S.Header>
-          <Badge>CZK</Badge>
+          <Badge css="margin-bottom: 1rem;">CZK</Badge>
           <Typography variant="h1" gutterBottom="0.25rem">
             Currency Converter
           </Typography>
@@ -73,6 +73,7 @@ const CurrencyConverter: React.FC = () => {
             placeholder="Enter amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleConvert()}
             suffix="CZK"
           />
         </S.Field>
@@ -82,13 +83,15 @@ const CurrencyConverter: React.FC = () => {
             Convert to
           </Typography>
           <S.PillGrid>
-            {Object.keys(data?.rates || {}).map((code) => (
+            {Object.entries(data?.rates || {}).map(([code, rate]) => (
               <Pill
                 key={code}
                 active={currency === code}
                 onClick={() => handleSetCurrencyAndConvert(code)}
+                css="flex-direction: column; gap: 0;"
               >
                 {code}
+                <S.PillCurrencyName>{rate.currency}</S.PillCurrencyName>
               </Pill>
             ))}
           </S.PillGrid>

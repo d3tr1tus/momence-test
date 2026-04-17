@@ -1,6 +1,9 @@
 import React, { ElementType } from 'react';
-import { TypographyProps, Variant } from 'types/components';
-import { StyledTypography } from './style';
+import {
+  TypographyProps,
+  Variant,
+} from 'components/Typography/Typography.type';
+import { StyledTypography } from 'components/Typography/style';
 
 const defaultElements: Record<Variant, ElementType> = {
   h1: 'h1',
@@ -19,6 +22,7 @@ const Typography: React.FC<TypographyProps> = ({
   gutterBottom,
   align,
   as,
+  css,
 }) => {
   return (
     <StyledTypography
@@ -27,6 +31,7 @@ const Typography: React.FC<TypographyProps> = ({
       $color={color}
       $gutterBottom={gutterBottom}
       $align={align}
+      $css={css}
     >
       {children}
     </StyledTypography>

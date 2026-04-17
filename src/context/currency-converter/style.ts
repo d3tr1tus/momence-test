@@ -11,6 +11,12 @@ export const Page = styled.div`
     ${({ theme }) => theme.colors.backgroundEnd} 100%
   );
   padding: ${({ theme }) => theme.space.lg};
+
+  @media (max-width: 480px) {
+    padding: ${({ theme }) => theme.space.sm};
+    align-items: flex-start;
+    padding-top: ${({ theme }) => theme.space.xl};
+  }
 `;
 
 export const Header = styled.div`
@@ -22,9 +28,24 @@ export const Field = styled.div`
 `;
 
 export const PillGrid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   gap: ${({ theme }) => theme.space.sm};
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+export const PillCurrencyName = styled.span`
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: 400;
+  opacity: 0.6;
+  line-height: 1;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const ResultArea = styled.div`
@@ -40,4 +61,6 @@ export const ResultValue = styled.div`
   align-items: baseline;
   justify-content: center;
   gap: ${({ theme }) => theme.space.sm};
+  flex-wrap: wrap;
+  margin-bottom: ${({ theme }) => theme.space.sm};
 `;

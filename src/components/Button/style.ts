@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
-import { ButtonVariant } from 'types/components';
+import { ButtonVariant } from 'components/Button/Button.type';
+import { customCss, CustomCssProps } from 'utils/styled';
 
 const variants: Record<ButtonVariant, ReturnType<typeof css>> = {
   primary: css`
@@ -27,10 +28,12 @@ const variants: Record<ButtonVariant, ReturnType<typeof css>> = {
   `,
 };
 
-export const StyledButton = styled.button<{
-  $variant: keyof typeof variants;
-  $fullWidth?: boolean;
-}>`
+export const StyledButton = styled.button<
+  {
+    $variant: keyof typeof variants;
+    $fullWidth?: boolean;
+  } & CustomCssProps
+>`
   height: 3.25rem;
   border: none;
   border-radius: ${({ theme }) => theme.radius.md};
@@ -53,4 +56,5 @@ export const StyledButton = styled.button<{
     cursor: not-allowed;
     transform: none;
   }
+  ${customCss}
 `;

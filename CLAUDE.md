@@ -22,7 +22,7 @@
 - **Styles in separate files** — each component's styled-components live in a `style.ts` file next to the component
 - **Structure by context** — group files by feature/domain, not by type (e.g. `src/currency-converter/` not `src/components/` + `src/hooks/`)
 - **Use rem units** — all sizing (font-size, padding, margin, radii, gaps, etc.) in `rem`, not `px`. Exception: borders stay in `px` (too small for rem)
-- **Arrow functions everywhere** — all functions (components, helpers, handlers, hooks) use arrow function syntax with explicit strict types
+- **Arrow functions everywhere** — all functions (components, helpers, handlers, hooks) use arrow function syntax with strict types on function signatures (parameters and return types). Do not annotate local variables where TypeScript can infer the type
 - **Component template** — every `.tsx` component follows this structure:
   ```tsx
   import React from 'react';

@@ -1,9 +1,13 @@
 import React from 'react';
-import { BadgeProps } from 'types/components';
-import { StyledBadge } from './style';
+import { BadgeProps } from 'components/Badge/Badge.type';
+import { StyledBadge } from 'components/Badge/style';
 
-const Badge: React.FC<BadgeProps> = ({ children, color }) => {
-  return <StyledBadge $color={color}>{children}</StyledBadge>;
+const Badge: React.FC<BadgeProps> = ({ children, color, css }) => {
+  return (
+    <StyledBadge $color={color} $css={css}>
+      {children}
+    </StyledBadge>
+  );
 };
 
 export default Badge;

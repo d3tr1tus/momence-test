@@ -1,4 +1,5 @@
 export interface ExchangeRate {
+  country: string;
   currency: string;
   code: string;
   rate: number;

@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
-import { Variant } from 'types/components';
+import { Variant } from 'components/Typography/Typography.type';
+import { customCss, CustomCssProps } from 'utils/styled';
 
 const variants: Record<Variant, ReturnType<typeof css>> = {
   h1: css`
@@ -30,20 +31,30 @@ const variants: Record<Variant, ReturnType<typeof css>> = {
     font-weight: 800;
     color: ${({ theme }) => theme.colors.text};
     line-height: 1;
+
+    @media (max-width: 480px) {
+      font-size: ${({ theme }) => theme.fontSize['2xl']};
+    }
   `,
   displaySub: css`
     font-size: ${({ theme }) => theme.fontSize['2xl']};
     font-weight: 600;
     color: ${({ theme }) => theme.colors.textSecondary};
+
+    @media (max-width: 480px) {
+      font-size: ${({ theme }) => theme.fontSize.xl};
+    }
   `,
 };
 
-export const StyledTypography = styled.span<{
-  $variant: Variant;
-  $color?: string;
-  $gutterBottom?: string;
-  $align?: string;
-}>`
+export const StyledTypography = styled.span<
+  {
+    $variant: Variant;
+    $color?: string;
+    $gutterBottom?: string;
+    $align?: string;
+  } & CustomCssProps
+>`
   margin: 0;
   ${({ $variant }) => variants[$variant as Variant]}
   ${({ $color }) =>
@@ -61,4 +72,5 @@ export const StyledTypography = styled.span<{
     css`
       text-align: ${$align};
     `}
+  ${customCss}
 `;
