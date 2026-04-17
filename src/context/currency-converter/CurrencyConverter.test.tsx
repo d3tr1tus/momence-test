@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'styled-components';
@@ -57,15 +57,23 @@ describe('CurrencyConverter', () => {
     expect(screen.getByText('USD')).toBeInTheDocument();
   });
 
-  it('converts on button click', async () => {
+  it('computes correct conversion result for EUR', async () => {
     renderWithProviders(<CurrencyConverter />);
     await screen.findByText('EUR');
 
     fireEvent.click(screen.getByText('Convert'));
 
-    await waitFor(() => {
-      expect(screen.getAllByText(/CZK/).length).toBeGreaterThan(2);
-    });
+    await screen.findByText('38,56');
+    expect(screen.getByText('1000 CZK =')).toBeInTheDocument();
+  });
+
+  it('computes correct conversion result for USD', async () => {
+    renderWithProviders(<CurrencyConverter />);
+    await screen.findByText('USD');
+
+    fireEvent.click(screen.getByText('USD'));
+
+    await screen.findByText('43,83');
   });
 
   it('converts on Enter key in amount input', async () => {
@@ -75,20 +83,60 @@ describe('CurrencyConverter', () => {
     const input = screen.getByPlaceholderText('Enter amount');
     fireEvent.keyDown(input, { key: 'Enter' });
 
-    await waitFor(() => {
-      expect(screen.getAllByText(/CZK/).length).toBeGreaterThan(2);
-    });
+    await screen.findByText('38,56');
   });
 
-  it('switches currency on pill click and converts', async () => {
+  it('shows exchange rate info after conversion', async () => {
     renderWithProviders(<CurrencyConverter />);
-    await screen.findByText('USD');
+    await screen.findByText('EUR');
 
-    fireEvent.click(screen.getByText('USD'));
+    fireEvent.click(screen.getByText('Convert'));
 
-    await waitFor(() => {
-      expect(screen.getAllByText(/CZK/).length).toBeGreaterThan(2);
-    });
+    await screen.findByText(/1 CZK = 0\.03856/);
+  });
+
+  it('converts with custom amount', async () => {
+    renderWithProviders(<CurrencyConverter />);
+    await screen.findByText('EUR');
+
+    const input = screen.getByPlaceholderText(
+      'Enter amount',
+    ) as HTMLInputElement;
+    await userEvent.clear(input);
+    await userEvent.type(input, '500');
+
+    fireEvent.click(screen.getByText('Convert'));
+
+    await screen.findByText('19,28');
+  });
+
+  it('does not convert with empty amount', async () => {
+    renderWithProviders(<CurrencyConverter />);
+    await screen.findByText('EUR');
+
+    const input = screen.getByPlaceholderText(
+      'Enter amount',
+    ) as HTMLInputElement;
+    await userEvent.clear(input);
+
+    fireEvent.click(screen.getByText('Convert'));
+
+    expect(screen.queryByText(/CZK =/)).not.toBeInTheDocument();
+  });
+
+  it('does not convert with non-numeric amount', async () => {
+    renderWithProviders(<CurrencyConverter />);
+    await screen.findByText('EUR');
+
+    const input = screen.getByPlaceholderText(
+      'Enter amount',
+    ) as HTMLInputElement;
+    await userEvent.clear(input);
+    await userEvent.type(input, 'abc');
+
+    fireEvent.click(screen.getByText('Convert'));
+
+    expect(screen.queryByText(/CZK =/)).not.toBeInTheDocument();
   });
 
   it('shows error message when API fails', async () => {
@@ -97,22 +145,12 @@ describe('CurrencyConverter', () => {
     );
     renderWithProviders(<CurrencyConverter />);
 
-    await waitFor(() => {
-      expect(
-        screen.getByText('Failed to load exchange rates'),
-      ).toBeInTheDocument();
-    });
+    await screen.findByText('Failed to load exchange rates');
   });
 
-  it('updates amount input value', async () => {
+  it('displays rate date from API', async () => {
     renderWithProviders(<CurrencyConverter />);
-    const input = screen.getByPlaceholderText(
-      'Enter amount',
-    ) as HTMLInputElement;
 
-    await userEvent.clear(input);
-    await userEvent.type(input, '500');
-
-    expect(input.value).toBe('500');
+    await screen.findByText(/17\.04\.2025/);
   });
 });
